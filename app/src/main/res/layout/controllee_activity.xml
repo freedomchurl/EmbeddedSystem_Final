@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/normalMainColor"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:textSize="15dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textColor="#ffffff"
+        android:background="@color/darkMainColor"
+        android:text="Controllee Mode"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11"
+        android:orientation="vertical">
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="14"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="나의 IP주소 - 192.168.0.1"
+                    android:background="#585858"
+                    android:gravity="center"
+                    android:textSize="12dp"
+                    android:textColor="#ffffff"
+                    android:id="@+id/myipAddress"/>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_weight="1"/>
+
+
+
+                <!--디바이스 이름-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="60dp">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
+                            android:text="디바이스 이름"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:textSize="10dp"
+                            android:background="#585858"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:hint="상대방에게 보일 디바이스 이름을 입력하세요"
+                            android:textSize="11dp"
+                            android:paddingLeft="10dp"
+                            android:inputType="text"
+                            android:id="@+id/deviceName_controllee"
+                            android:background="#ffffff"/>
+
+
+                    </LinearLayout>
+
+                    <android.support.v4.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="0.1"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:text="디바이스 비밀번호"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:textSize="10dp"
+                            android:background="#585858"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:hint="보안을 위한 디바이스 비밀번호를 입력하세요"
+                            android:textSize="11dp"
+                            android:inputType="textPassword"
+                            android:id="@+id/devicePwd_controllee"
+                            android:paddingLeft="10dp"
+                            android:background="#ffffff"/>
+
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+                <!-- 디바이스 비밀번호 설정 -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="60dp">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:text="모드 설정"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:textSize="10dp"
+                            android:background="#585858"/>
+
+                        <Switch
+                            android:id="@+id/readOnlyModeSwitch"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:paddingRight="20dp"
+                            android:paddingLeft="20dp"
+                            android:textSize="10dp"
+                            android:background="#ffffff"
+                            android:text="Read Only Mode" />
+
+
+                    </LinearLayout>
+
+                    <android.support.v4.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="0.1"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:text="포트 번호 설정"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:textSize="10dp"
+                            android:background="#585858"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:hint="통신을 실시할 포트번호를 적으세요"
+                            android:textSize="11dp"
+                            android:paddingLeft="10dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/devicePort_controllee"
+                            android:background="#ffffff"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:text="디바이스 대표 아이콘"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:textSize="10dp"
+                    android:background="#585858"/>
+
+
+                <GridView
+                    android:background="#ffffff"
+                    android:layout_width="match_parent"
+                    android:numColumns="3"
+                    android:id="@+id/iconGridView"
+                    android:stretchMode="columnWidth"
+                    android:layout_height="140dp">
+
+
+                </GridView>
+
+
+            </LinearLayout>
+
+
+
+
+        </ScrollView>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="3.5">
+
+        <Button
+            android:layout_width="0dp"
+            android:id="@+id/controlleeOkButton"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_round_intro"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="15dp"
+            android:text="등록"
+            android:textSize="12dp"
+            android:textColor="@color/darkMainColor"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:id="@+id/controlleeCancelButton"
+            android:layout_height="match_parent"
+            android:layout_marginRight="30dp"
+            android:text="취소"
+            android:textSize="12dp"
+            android:textColor="@color/darkMainColor"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_round_intro"
+            android:layout_weight="1"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

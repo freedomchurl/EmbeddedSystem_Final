@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:background="@color/darkMainColor"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:layout_weight="8"
+            android:text="Controllee Mode"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <ImageButton
+            android:id="@+id/ee_disconnect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@color/darkMainColor"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/coupon"
+            android:tooltipText="연결 해제" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:paddingBottom="5dp"
+        android:background="@color/darkMainColor"
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/ee_mainMode"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:paddingLeft="15dp"
+            android:text="읽기모드"
+            android:textColor="#ffffff"
+            android:textSize="10dp" />
+
+
+        <TextView
+            android:id="@+id/ee_controllerIP_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_layout"
+            android:gravity="center"
+            android:text="Controller IP : 192.168.233.233/3533"
+            android:textColor="#585858"
+            android:textSize="12dp" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:background="@color/normalMainColor"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="5">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:background="#585858"
+                    android:layout_height="30dp">
+
+                    <TextView
+                        android:id="@+id/ee_device_Name"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="디바이스 이름"
+                        android:textColor="#ffffff"
+                        android:textSize="12dp" />
+
+
+                    <TextView
+                        android:id="@+id/ee_deviceIP"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:background="#585858"
+                        android:gravity="center"
+                        android:text="내 디바이스 IP주소"
+                        android:textColor="#ffffff"
+                        android:textSize="12dp" />
+
+
+
+                </LinearLayout>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <!-- TEXTLCD -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:orientation="horizontal"
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="6">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:text="TEXT LCD"
+                            android:textSize="10dp"
+                            android:background="#585858"
+                            android:layout_height="20dp" />
+
+                        <EditText
+                            android:id="@+id/inputText_ee"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="6"
+                            android:background="#ffffff"
+                            android:hint="Input TEXTLCD data"
+                            android:inputType="text"
+                            android:paddingLeft="5dp"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/adjustText_ee"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_round_intro"
+                        android:gravity="center"
+                        android:text="적용"
+                        android:textColor="@color/darkMainColor" />
+
+                </LinearLayout>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+
+                <!-- 7Segment -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:orientation="horizontal"
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="6">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:background="#585858"
+                            android:gravity="center"
+                            android:text="7-Segment"
+                            android:textColor="#ffffff"
+                            android:textSize="10dp" />
+
+                        <EditText
+                            android:id="@+id/inputSegment_ee"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="6"
+                            android:background="#ffffff"
+                            android:hint="Input 7-Segment data ( 최대 6자리 정수 )"
+                            android:inputType="text"
+                            android:paddingLeft="5dp"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/adjustSegment_ee"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_round_intro"
+                        android:gravity="center"
+                        android:text="적용"
+                        android:textColor="@color/darkMainColor" />
+
+                </LinearLayout>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <!-- LED -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:orientation="horizontal"
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="6">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:text="LED"
+                            android:textSize="10dp"
+                            android:background="#585858"
+                            android:layout_height="20dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="6">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:background="#ffffff"
+                                android:layout_height="match_parent">
+
+                                <!-- 8개의 LED -->
+                                <Button
+                                    android:id="@+id/led1_ee"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_really_round" />
+
+                                <Button
+                                    android:id="@+id/led2_ee"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_really_round" />
+
+                                <Button
+                                    android:id="@+id/led3_ee"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_really_round" />
+
+                                <Button
+                                    android:id="@+id/led4_ee"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_really_round" />
+
+                                <Button
+                                    android:id="@+id/led5_ee"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_really_round" />
+
+                                <Button
+                                    android:id="@+id/led6_ee"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_really_round" />
+
+                                <Button
+                                    android:id="@+id/led7_ee"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_really_round" />
+
+                                <Button
+                                    android:id="@+id/led8_ee"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_really_round" />
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+
+                <!-- Dot & Full -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:orientation="horizontal"
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="6">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:text="DotMatrix"
+                            android:textSize="10dp"
+                            android:background="#585858"
+                            android:layout_height="20dp" />
+
+                        <EditText
+                            android:id="@+id/inputDot_ee"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:background="#ffffff"
+                            android:hint="Input DotMatrix"
+                            android:inputType="text"
+                            android:paddingLeft="5dp"
+                            android:textSize="10dp" />
+
+                        <Button
+                            android:id="@+id/adjustDot_ee"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/button_round_intro"
+                            android:gravity="center"
+                            android:text="적용"
+                            android:textColor="@color/darkMainColor" />
+
+                        <Button
+                            android:id="@+id/adjustFull_ee"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/button_round_intro"
+                            android:gravity="center"
+                            android:text="Full Color 적용"
+                            android:textColor="@color/darkMainColor"
+                            android:textSize="10dp" />
+
+                    </LinearLayout>
+
+                    <android.support.v4.widget.Space
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="12">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:text="Full Color LED"
+                            android:textSize="10dp"
+                            android:background="#585858"
+                            android:layout_height="20dp" />
+
+
+                        <EditText
+                            android:id="@+id/inputfull1_ee"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#ffffff"
+                            android:gravity="center"
+                            android:text="DotMatrix"
+                            android:textColor="#ffffff"
+                            android:textSize="10dp" />
+
+
+                        <EditText
+                            android:id="@+id/inputfull2_ee"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#ffffff"
+                            android:gravity="center"
+                            android:text="DotMatrix"
+                            android:textColor="#ffffff"
+                            android:textSize="10dp" />
+
+                        <EditText
+                            android:id="@+id/inputfull3_ee"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#ffffff"
+                            android:gravity="center"
+                            android:text="DotMatrix"
+                            android:textColor="#ffffff"
+                            android:textSize="10dp" />
+
+                        <EditText
+                            android:id="@+id/inputfull4_ee"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#ffffff"
+                            android:gravity="center"
+                            android:text="DotMatrix"
+                            android:textColor="#ffffff"
+                            android:textSize="10dp" />
+
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

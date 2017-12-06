@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#32b67a"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:text="꼭두각시 보드"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#ffffff"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/remote"
+        android:scaleType="centerInside"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_weight="6"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="3.5">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_marginLeft="125dp"
+            android:layout_marginRight="125dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="0dp"
+            android:text="Controller Mode"
+            android:id="@+id/controllerButton"
+            android:textColor="#32b67a"
+            android:textSize="12dp"
+            android:background="@drawable/button_round_intro"
+            android:layout_weight="1"/>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_marginLeft="125dp"
+            android:layout_marginRight="125dp"
+            android:layout_height="0dp"
+            android:text="Controllee Mode"
+            android:textColor="#32b67a"
+            android:id="@+id/controlleeButton"
+            android:textSize="12dp"
+            android:background="@drawable/button_round_intro"
+            android:layout_weight="1"/>
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
