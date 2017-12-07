@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +71,8 @@ public class ControllerActivity extends Activity implements View.OnClickListener
     private int[][] fullData = new int[4][3];
     private TextView[] myFull = new TextView[4];
 
+    ItemTouchHelper itemTouchHelper = null;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +84,9 @@ public class ControllerActivity extends Activity implements View.OnClickListener
 
         controlleeView.setLayoutManager(layoutManager);
         adapter = new MyAdpater(myData,getApplicationContext());
+
+        itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(controlleeView);
 
         controlleeView.setAdapter(adapter);
 
@@ -117,6 +123,25 @@ public class ControllerActivity extends Activity implements View.OnClickListener
         Init();
 
     }
+
+    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT){
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return true;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+            final int position = viewHolder.getAdapterPosition();
+
+            Log.d("Adapter","Adapter");
+            myData.remove(position);
+            controlleeView.getAdapter().notifyDataSetChanged();
+
+        }
+    };
 
 
 
