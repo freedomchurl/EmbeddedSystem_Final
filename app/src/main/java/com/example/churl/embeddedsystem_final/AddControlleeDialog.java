@@ -5,8 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * Created by churl on 2017-12-07.
@@ -49,6 +51,8 @@ public class AddControlleeDialog extends Dialog{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.dialog_addcontrollee);
 
         inputIP = (EditText) findViewById(R.id.add_controllee_ip);
@@ -70,13 +74,19 @@ public class AddControlleeDialog extends Dialog{
             public void onClick(View view) {
 
                 String ip = inputIP.getText().toString();
-                int port = Integer.valueOf(inputPort.getText().toString());
+                String tmpPort = inputPort.getText().toString();
                 String pwd = inputPwd.getText().toString();
 
-                // Activity로 전달해주어야한다. Interface를 사용하자.
-                onCustomDialogEventListener.customDialogEvent(ip,pwd,port);
+                if(ip.equals("") || tmpPort.equals("") || pwd.equals(""))
+                    Toast.makeText(context,"빈칸을 채우세요",Toast.LENGTH_SHORT).show();
 
-                cancel();
+                else {
+                    int port = Integer.valueOf(tmpPort);
+                    // Activity로 전달해주어야한다. Interface를 사용하자.
+                    onCustomDialogEventListener.customDialogEvent(ip, pwd, port);
+
+                    cancel();
+                }
 
             }
         });

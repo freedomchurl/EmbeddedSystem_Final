@@ -2,16 +2,21 @@ package com.example.churl.embeddedsystem_final;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by caucse on 2017-11-29.
@@ -33,18 +38,13 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
     private EditText et_7seg = null;
     private EditText et_dot = null;
 
-    private EditText et_full1 = null;
-    private EditText et_full2 = null;
-    private EditText et_full3 = null;
-    private EditText et_full4 = null;
-
     private Button[] ledButton = new Button[8];
     // for 문으로 button을 가져오고 하나의 setOnClick을 줘야한다.
 
     private Button bt_textlcd = null;
     private Button bt_7seg = null;
     private Button bt_dot = null;
-    private Button bt_full= null;
+    private LinearLayout bt_full= null;
 
     private Switch switch_mode = null;
     private TextView tv_deviceName = null;
@@ -54,6 +54,11 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
 
     private boolean[] isRed = new boolean[8];
 
+
+    private TextView[] myFull = new TextView[4];
+
+
+    private int[][] fullData = new int[4][3];
 
     // Socket용 Thread가 하나 존재하고 null로 초기화 되어야한다. 항상 null을 유지
 
@@ -221,6 +226,21 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
 
     public void Init()
     {
+
+        myFull[0] = (TextView) findViewById(R.id.ct_led1);
+        myFull[1] = (TextView) findViewById(R.id.ct_led2);
+        myFull[2] = (TextView) findViewById(R.id.ct_led3);
+        myFull[3] = (TextView) findViewById(R.id.ct_led4);
+
+        for(int i=0;i<4;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                this.fullData[i][j] = 255;
+            }
+        }
+
+
         bt_discon = (ImageButton) findViewById(R.id.ee_disconnect);
         bt_discon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,13 +274,6 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
 
         et_dot = (EditText) findViewById(R.id.inputDot_ee);
 
-        et_full1 = (EditText) findViewById(R.id.inputfull1_ee);
-
-        et_full2 = (EditText) findViewById(R.id.inputfull2_ee);
-
-        et_full3 = (EditText) findViewById(R.id.inputfull3_ee);
-
-        et_full4 = (EditText) findViewById(R.id.inputfull4_ee);
 
         ledButton = new Button[8];
         // for 문으로 button을 가져오고 하나의 setOnClick을 줘야한다.
@@ -296,6 +309,7 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
             @Override
             public void onClick(View view) {
                 // 7segment 이벤트
+                Seg7_Clicked();
             }
         });
 
@@ -304,14 +318,37 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
             @Override
             public void onClick(View view) {
                 // dotmatrix 클릭되었음
+                Dot_Send_Clicked();
             }
         });
 
-        bt_full = (Button) findViewById(R.id.adjustFull_ee);
+        bt_full = (LinearLayout) findViewById(R.id.adjustFull_ee);
         bt_full.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // full 적용버튼Full_Led_Clicked();
+                FullColorLEDDialog dialog = new FullColorLEDDialog(ControlleeMainActivity.this, new FullColorLEDDialog.FullDialogEventListener() {
+                    @Override
+                    public void FullDialogSetEvent(int[][] input) {
+                        fullData = input;
+
+                        for(int i=0;i<4;i++)
+                        {
+                            myFull[i].setBackgroundColor(Color.rgb(fullData[i][0],fullData[i][1],fullData[i][2]));
+                        }
+
+                        Full_Led_Clicked();
+                    }
+
+                    @Override
+                    public void SetDialogEvent(int[][] input) {
+
+                    }
+                });
+
+                dialog.setValue(fullData);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.show();
             }
         });
     }
@@ -474,7 +511,7 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         et_dot.setText("");
         // Grid View를 건드리게 되면, setDot EditText를 그냥 날려버린다.
         SendDotMatrix(tmpDot);
-
+        // 오버로딩 되어있어
     }
 
     // 일반 DotMatrix 전송
@@ -511,6 +548,18 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         SetFullLEDDevice();
 
         // 이부분 추가 요망, UI의 변경이 우선이다.
+
+        String [][] tmp  = new String[4][3];
+
+        for(int i=0;i<4;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                tmp[i][j] = new String(String.valueOf(fullData[i][j]));
+            }
+        }
+
+        SendFullLED(tmp);
 
     }
     public void Text_LCD_Clicked()

@@ -61,7 +61,7 @@
 
 
                     <TextView
-                        android:id="@+id/device_IP_controller"
+                        android:id="@+id/device_IP_controller_er"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:background="#585858"
@@ -101,7 +101,7 @@
                                 android:layout_height="20dp" />
 
                             <EditText
-                                android:id="@+id/inputText"
+                                android:id="@+id/inputText_er"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="6"
@@ -113,7 +113,7 @@
                         </LinearLayout>
 
                         <Button
-                            android:id="@+id/adjustText"
+                            android:id="@+id/adjustText_er"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginBottom="5dp"
@@ -158,7 +158,7 @@
                                 android:layout_height="20dp" />
 
                             <EditText
-                                android:id="@+id/inputSegment"
+                                android:id="@+id/inputSegment_er"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="6"
@@ -170,7 +170,7 @@
                         </LinearLayout>
 
                         <Button
-                            android:id="@+id/adjustSegment"
+                            android:id="@+id/adjustSegment_er"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginBottom="5dp"
@@ -226,15 +226,7 @@
 
                                     <!-- 8개의 LED -->
                                     <Button
-                                        android:id="@+id/led1"
-                                        android:layout_width="0dp"
-                                        android:layout_height="match_parent"
-                                        android:layout_margin="5dp"
-                                        android:layout_weight="1"
-                                        android:background="@drawable/button_really_round_red" />
-
-                                    <Button
-                                        android:id="@+id/led2"
+                                        android:id="@+id/led1_er"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_margin="5dp"
@@ -242,7 +234,7 @@
                                         android:background="@drawable/button_really_round" />
 
                                     <Button
-                                        android:id="@+id/led3"
+                                        android:id="@+id/led2_er"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_margin="5dp"
@@ -250,7 +242,7 @@
                                         android:background="@drawable/button_really_round" />
 
                                     <Button
-                                        android:id="@+id/led4"
+                                        android:id="@+id/led3_er"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_margin="5dp"
@@ -258,7 +250,7 @@
                                         android:background="@drawable/button_really_round" />
 
                                     <Button
-                                        android:id="@+id/led5"
+                                        android:id="@+id/led4_er"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_margin="5dp"
@@ -266,7 +258,7 @@
                                         android:background="@drawable/button_really_round" />
 
                                     <Button
-                                        android:id="@+id/led6"
+                                        android:id="@+id/led5_er"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_margin="5dp"
@@ -274,7 +266,7 @@
                                         android:background="@drawable/button_really_round" />
 
                                     <Button
-                                        android:id="@+id/led7"
+                                        android:id="@+id/led6_er"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_margin="5dp"
@@ -282,7 +274,15 @@
                                         android:background="@drawable/button_really_round" />
 
                                     <Button
-                                        android:id="@+id/led8"
+                                        android:id="@+id/led7_er"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_margin="5dp"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/button_really_round" />
+
+                                    <Button
+                                        android:id="@+id/led8_er"
                                         android:layout_width="0dp"
                                         android:layout_height="match_parent"
                                         android:layout_margin="5dp"
@@ -329,7 +329,7 @@
                                 android:layout_height="20dp" />
 
                             <EditText
-                                android:id="@+id/inputDot"
+                                android:id="@+id/inputDot_er"
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
                                 android:background="#ffffff"
@@ -339,7 +339,7 @@
                                 android:textSize="10dp" />
 
                             <Button
-                                android:id="@+id/adjustDot"
+                                android:id="@+id/adjustDot_er"
                                 android:layout_width="match_parent"
                                 android:layout_height="25dp"
                                 android:layout_marginTop="10dp"
@@ -348,16 +348,6 @@
                                 android:text="적용"
                                 android:textColor="@color/darkMainColor" />
 
-                            <Button
-                                android:id="@+id/adjustFull"
-                                android:layout_width="match_parent"
-                                android:layout_height="25dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/button_round_intro"
-                                android:gravity="center"
-                                android:text="Full Color 적용"
-                                android:textColor="@color/darkMainColor"
-                                android:textSize="10dp" />
 
                         </LinearLayout>
 
@@ -369,7 +359,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:layout_weight="12">
+                            android:layout_weight="8">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -381,54 +371,71 @@
                                 android:layout_height="20dp" />
 
 
-                            <EditText
-                                android:id="@+id/inputfull1"
+                            <android.support.v4.widget.Space
                                 android:layout_width="match_parent"
-                                android:layout_height="20dp"
-                                android:layout_marginBottom="5dp"
-                                android:background="#ffffff"
-                                android:gravity="center"
-                                android:text="DotMatrix"
-                                android:textColor="#ffffff"
-                                android:textSize="10dp" />
+                                android:layout_height="10dp" />
 
-
-                            <EditText
-                                android:id="@+id/inputfull2"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="20dp"
-                                android:layout_marginBottom="5dp"
-                                android:background="#ffffff"
-                                android:gravity="center"
-                                android:text="DotMatrix"
-                                android:textColor="#ffffff"
-                                android:textSize="10dp" />
+                                android:layout_height="wrap_content"
+                                android:id="@+id/adjustFull_er"
+                                android:orientation="vertical">
 
-                            <EditText
-                                android:id="@+id/inputfull3"
-                                android:layout_width="match_parent"
-                                android:layout_height="20dp"
-                                android:layout_marginBottom="5dp"
-                                android:background="#ffffff"
-                                android:gravity="center"
-                                android:text="DotMatrix"
-                                android:textColor="#ffffff"
-                                android:textSize="10dp" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:orientation="horizontal"
+                                    android:layout_height="wrap_content">
 
-                            <EditText
-                                android:id="@+id/inputfull4"
-                                android:layout_width="match_parent"
-                                android:layout_height="20dp"
-                                android:layout_marginBottom="5dp"
-                                android:background="#ffffff"
-                                android:gravity="center"
-                                android:text="DotMatrix"
-                                android:textColor="#ffffff"
-                                android:textSize="10dp" />
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_marginRight="5dp"
+                                        android:background="#ffffff"
+                                        android:id="@+id/cr_led1"
+                                        android:layout_height="90dp" />
 
 
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:background="#ffffff"
+                                        android:id="@+id/cr_led2"
+                                        android:layout_height="90dp" />
 
-                        </LinearLayout>
+                                </LinearLayout>
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:orientation="horizontal"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_marginRight="5dp"
+                                        android:background="#ffffff"
+                                        android:id="@+id/cr_led3"
+                                        android:layout_height="90dp" />
+
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:background="#ffffff"
+                                        android:id="@+id/cr_led4"
+                                        android:layout_height="90dp" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+
+                            </LinearLayout>
 
                     </LinearLayout>
 
@@ -449,8 +456,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/add_controllee"
-        android:layout_marginLeft="110dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="82dp"
+        android:layout_marginBottom="0dp"
         app:backgroundTint="@color/normalMainColor"
         app:elevation="5dp"
         android:src="@drawable/ic_add_w"

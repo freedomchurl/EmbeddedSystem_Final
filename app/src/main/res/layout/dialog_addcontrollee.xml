@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="500dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="400dp"
     android:orientation="vertical"
     android:background="@color/normalMainColor"
     android:layout_height="wrap_content">
@@ -48,7 +48,7 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="25dp"
                     android:hint="상대방의 IP를 입력하세요"
                     android:textSize="11dp"
                     android:paddingLeft="10dp"
@@ -72,7 +72,7 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="25dp"
                     android:hint="상대방의 Port를 입력하세요"
                     android:textSize="11dp"
                     android:paddingLeft="10dp"
@@ -96,11 +96,11 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="25dp"
                     android:hint="접속 비밀번호를 입력하세요"
                     android:textSize="11dp"
                     android:paddingLeft="10dp"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:id="@+id/add_controllee_pwd"
                     android:background="#ffffff"/>
 

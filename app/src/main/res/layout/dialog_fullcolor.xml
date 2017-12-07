@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="400dp"
+    android:orientation="vertical"
+    android:background="@color/normalMainColor"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textSize="12dp"
+        android:text="Modify Full Color LED"
+        android:gravity="center_vertical"
+        android:background="@color/darkMainColor"
+        android:textColor="#ffffff"
+        android:paddingLeft="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_weight="3"
+                        android:layout_marginRight="20dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginRight="5dp"
+                                    android:background="#125123"
+                                    android:id="@+id/controllee_led1"
+                                    android:layout_height="90dp" />
+
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:background="#fe2352"
+                                    android:id="@+id/controllee_led2"
+                                    android:layout_height="90dp" />
+
+                            </LinearLayout>
+
+                            <android.support.v4.widget.Space
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginRight="5dp"
+                                    android:background="#2323ff"
+                                    android:id="@+id/controllee_led3"
+                                    android:layout_height="90dp" />
+
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:background="#ff22ff"
+                                    android:id="@+id/controllee_led4"
+                                    android:layout_height="90dp" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
+                            android:text="RED"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:textSize="10dp"
+                            android:background="#585858"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:hint="RED 값(0~255)"
+                            android:textSize="11dp"
+                            android:paddingLeft="10dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/controllee_dialog_red"
+                            android:background="#ffffff"/>
+                        <android.support.v4.widget.Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
+                            android:text="GREEN"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:textSize="10dp"
+                            android:background="#585858"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:hint="GREEN 값(0~255)"
+                            android:textSize="11dp"
+                            android:paddingLeft="10dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/controllee_dialog_green"
+
+                            android:background="#ffffff"/>
+                        <android.support.v4.widget.Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
+                            android:text="BLUE"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:textSize="10dp"
+                            android:background="#585858"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:hint="BLUE 값(0~255)"
+                            android:textSize="11dp"
+                            android:paddingLeft="10dp"
+                            android:inputType="numberDecimal"
+                            android:id="@+id/controllee_dialog_blue"
+                            android:background="#ffffff"/>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/button_round_intro"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
+                android:id="@+id/modify_preview_button_controllee"
+                android:textColor="@color/darkMainColor"
+                android:textSize="11dp"
+                android:text="미리보기"/>
+
+
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/button_round_intro"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
+                android:id="@+id/modify_ok_button_controllee"
+                android:textColor="@color/darkMainColor"
+                android:textSize="11dp"
+                android:text="적용"/>
+
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/button_round_intro"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:id="@+id/modify_cancel_button_controllee"
+                android:textColor="@color/darkMainColor"
+                android:textSize="11dp"
+                android:text="취소"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
