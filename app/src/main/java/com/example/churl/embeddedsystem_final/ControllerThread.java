@@ -66,4 +66,17 @@ public class ControllerThread extends Thread {
         }
     }
 
+
+    public void sendData()
+    {
+        String allMessage = recv.myTmp.getData();
+        // 여기서 가져오고 나서
+
+        if(send!=null && recv.myTmp.isReadMode==false)
+        {
+            send.message = new String(allMessage);
+            send.hasMessage = true;
+        }
+    }
+
 }

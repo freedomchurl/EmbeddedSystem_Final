@@ -81,14 +81,17 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         isReadMode = i.getBooleanExtra("IS_READMODE",false);
         iconNum = i.getIntExtra("ICON_NUM",0);
 
+        Log.d("ICONNUM",iconNum + "");
         // 먼저 ReadMode를 셋팅
         switch_mode.setChecked(isReadMode);
+        myData.isReadMode = isReadMode;
 
         // 그다음에 디바이스 이름을 셋팅
         tv_deviceName.setText(deviceName);
         tv_deviceIP.setText(deviceIP + "/" + devicePort);
 
         controllerIP.setText("No Connected!");
+        et_7seg.setText("0");
         // 여기서 소켓생성을 통해서 ServerSocket을 열어야 한다.
 
         StartSock();
@@ -238,6 +241,9 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
                 isRed[7] = false;
             }
         }
+       //
+        SendAll();
+
 
     }
 
@@ -273,7 +279,9 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 // 현재 모드로부터 변경되는 것을 알려야한다. ( 소켓을 통해서 Controller에게, 그리고 나도 가지고 있어야한다 )
                 isReadMode = b;
-                SendMode(isReadMode); // 변경된 Read-Mode의 설정을 알려주어야 한다.
+                myData.isReadMode = b;
+                Log.d("MODECHECK","" + isReadMode);
+                SendAll();
             }
         });
 
@@ -315,7 +323,7 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         bt_textlcd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Text_LCD_Clicked();
+                SendAll();
             }
         });
 
@@ -324,7 +332,8 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
             @Override
             public void onClick(View view) {
                 // 7segment 이벤트
-                Seg7_Clicked();
+                SendAll();
+
             }
         });
 
@@ -333,7 +342,8 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
             @Override
             public void onClick(View view) {
                 // dotmatrix 클릭되었음
-                Dot_Send_Clicked();
+                SendAll();
+
             }
         });
 
@@ -350,9 +360,10 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
                         for(int i=0;i<4;i++)
                         {
                             myFull[i].setBackgroundColor(Color.rgb(fullData[i][0],fullData[i][1],fullData[i][2]));
-                        }
 
-                        Full_Led_Clicked();
+                        }
+                        SendAll();
+
                     }
 
                     @Override
@@ -372,7 +383,20 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
     // 전체를 한번에 보내기 위함
     public void SendAll()
     {
+        if(ee_Thread!=null) {
 
+            myData.setLed(isRed);
+            myData.setReadMode(isReadMode);
+            if(et_7seg.getText().toString().equals(""))
+                myData.setSegData(0);
+            else
+                myData.setSegData(Integer.valueOf(et_7seg.getText().toString()));
+            myData.setDotData(et_dot.getText().toString());
+            myData.setTextData(et_textlcd.getText().toString());
+            myData.setFull(this.fullData);
+
+            ee_Thread.sendData();
+        }
     }
 
     // 여기는, 유정이가 Receive한 데이터들을 나한테 보내주었을 때 내가 사용하기 위함이다
@@ -383,6 +407,22 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
     {
         this.controllerIP.setText("Controller IP : " + IP + "/" + Port);
     }
+
+    public void UpdateUI()
+    {
+        String textData = myData.getTextData();
+        String textDot = myData.getDotData();
+        int SegData = myData.getSegData();
+        int [][] fullData = myData.getFull();
+        boolean [] ledData = myData.getLed();
+
+        setTextLCDView(textData);
+        setDot_EditText(textDot);
+        set7SegView(SegData);
+        setLedView(ledData);
+        setFullLedView(fullData);
+    }
+
 
     // TextLCD EditText에 값을 고정하기 위함이다.
     public void setTextLCDView(String input)
@@ -399,7 +439,6 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         et_dot.setText(input);
 
         // 여기서는 View도 건드려야한다.
-        setDot_fromText(input);
         SetDotDevice();
     }
 
@@ -414,33 +453,41 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         SetDotDevice_Advanced();
     }
 
-    public void set7SegView(String input)
+    public void set7SegView(int input)
     {
-        et_7seg.setText(input);
+        et_7seg.setText(String.valueOf(input));
         Set7SegmentDevice();
     }
 
-    public void setLedView(String input)
+    public void setLedView(boolean [] input)
     {
         // 00000000 과 같은 형식
 
-        char [] inputArr = input.toCharArray();
+        //char [] inputArr = input.toCharArray();
 
         for(int i=0;i<8;i++)
         {
-            if(inputArr[i]=='0')
-                isRed[i] = false;
-            else if(inputArr[i]=='1')
-                isRed[i] = true;
+            isRed[i] = input[i];
         }
 
         notifyLED();
         SetLEDDevice();
     }
 
-    public void setFullLedView(String input)
+    public void setFullLedView(int [][] input)
     {
         // 들어온 인풋으로 값을 셋팅하고
+
+        for(int i=0;i<4;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                fullData[i][j] = input[i][j];
+            }
+
+            myFull[i].setBackgroundColor(Color.rgb(fullData[i][0],fullData[i][1],fullData[i][2]));
+        }
+
 
         SetFullLEDDevice();
     }
@@ -509,127 +556,7 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         // 자신의 정보를 Controller에게 보내야한다.
     }
 
-    // Read Only - Read/Write 를 설정하는 순간 Controller에게 보내야 한다.
-    public void SendMode(boolean mode)
-    {
-        // 1. Controller에게 전송해야한다.
-        // 2. mode가 true라면 On , false라면 Off
-    }
 
-    public void SendTextLCD(String text)
-    {
-
-    }
-
-    public void Send7Segment(int input)
-    {
-
-    }
-
-    public void SendLED(boolean [] input)
-    {
-
-    }
-
-    public void SendDotMatrix(String input)
-    {
-
-    }
-
-    // 이 메소드는 DotMatrix를 하나씩 찍도록 하기 위함..
-    public void SendDotMatrix(boolean[][] input)
-    {
-
-    }
-
-    public void SendFullLED(String [][] input)
-    {
-
-    }
-
-    // 여기까지는 통신과 관련된 부분 -> 유정이랑 함께 짜야하는 부분
-    //---------------------------------------------------------------------------------
-
-
-    //---------------------------------------------------------------------------------
-    // 여기부터는 버튼 등의 이벤트 부분, 내 스스로 짜야하는 부분이다.
-
-    // 입력받은 Text로부터 Dotview로 바꾸어준다.
-    public void setDot_fromText(String input)
-    {
-        // 여기서 Text를 DotView로 띄워줘야한다.
-    }
-
-
-    // 이건 DotMatrix 이미지 클릭형식
-    public void Dot_Advanced_Clicked()
-    {
-        boolean [][] tmpDot = new boolean[7][10];
-        // 데이터를 가져와야한다.
-
-        et_dot.setText("");
-        // Grid View를 건드리게 되면, setDot EditText를 그냥 날려버린다.
-        SendDotMatrix(tmpDot);
-        // 오버로딩 되어있어
-    }
-
-    // 일반 DotMatrix 전송
-    public void Dot_Send_Clicked()
-    {
-        SetDotDevice();
-        setDot_fromText(et_dot.getText().toString());
-        SendDotMatrix(et_dot.getText().toString());
-    }
-
-    public void Seg7_Clicked()
-    {
-        Set7SegmentDevice();
-
-        Send7Segment(Integer.valueOf(et_7seg.getText().toString()));
-    }
-
-    public void Led_Clicked()
-    {
-        SetLEDDevice();
-
-        boolean [] sendLed = new boolean[8];
-        for(int i= 0;i<8;i++)
-        {
-            sendLed[i] = isRed[i];
-        }
-
-        SendLED(sendLed);
-    }
-
-    public void Full_Led_Clicked()
-    {
-        // 쓰레드가 필요하지 않음
-        SetFullLEDDevice();
-
-        // 이부분 추가 요망, UI의 변경이 우선이다.
-
-        String [][] tmp  = new String[4][3];
-
-        for(int i=0;i<4;i++)
-        {
-            for(int j=0;j<3;j++)
-            {
-                tmp[i][j] = new String(String.valueOf(fullData[i][j]));
-            }
-        }
-
-        SendFullLED(tmp);
-
-    }
-    public void Text_LCD_Clicked()
-    {
-        // 쓰레드가 필요하지 않음
-        // 1. 나 자신의 Device를 적용하고
-        SetTextDevice();
-
-        // 2. Controller로 내 Status를 전송한다.
-        SendTextLCD(et_textlcd.getText().toString());
-    }
     // 여기까지
     //-----------------------------------------------------------------------------------
 

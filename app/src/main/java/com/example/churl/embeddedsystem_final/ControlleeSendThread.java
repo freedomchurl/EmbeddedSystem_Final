@@ -19,8 +19,11 @@ public class ControlleeSendThread extends Thread {
     String message = null;
     DataOutputStream dos = null;
 
-    ControlleeSendThread(Socket sock, ControlleeMainActivity activity)
+    ControlleeData myData = null;
+
+    ControlleeSendThread(Socket sock, ControlleeMainActivity activity,ControlleeData myData)
     {
+        this.myData = myData;
         this.sock = sock;
         this.activity = activity;
         try {
@@ -48,6 +51,12 @@ public class ControlleeSendThread extends Thread {
             dos.writeUTF(message);
         }catch (Exception e){}
         //INFO:NAME\nICONNUM\nTRUE;
+
+        String currentDevice = myData.getData();
+        try {
+            dos.writeUTF(currentDevice);
+        }catch (Exception e){}
+        Log.d("Server","초기 정보를 보내는데 성공");
 
 
         while(isRunning)

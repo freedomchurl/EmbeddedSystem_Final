@@ -45,8 +45,8 @@ public class ControlleeThread extends Thread {
             });
 
 
-            send = new ControlleeSendThread(sock,activity);
-            recv = new ControlleeRecvThread(sock,activity);
+            send = new ControlleeSendThread(sock,activity,myData);
+            recv = new ControlleeRecvThread(sock,activity,myData);
 
             send.start();
             recv.start();
@@ -85,8 +85,8 @@ public class ControlleeThread extends Thread {
             });
 
 
-            send = new ControlleeSendThread(sock,activity);
-            recv = new ControlleeRecvThread(sock,activity);
+            send = new ControlleeSendThread(sock,activity,myData);
+            recv = new ControlleeRecvThread(sock,activity,myData);
 
             send.start();
             recv.start();

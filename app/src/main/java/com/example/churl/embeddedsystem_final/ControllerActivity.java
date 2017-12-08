@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -61,6 +62,9 @@ public class ControllerActivity extends Activity implements View.OnClickListener
     private Button bt_7seg = null;
     private Button bt_dot = null;
     private LinearLayout bt_full= null;
+
+    public int CurrentClickedItem = -1;
+
 
     private boolean[] isRed = new boolean[8];
 
@@ -110,6 +114,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
                         mcontrollerThread.add((new ControllerThread(tmpAddIP,tmpAddPort,ControllerActivity.this,myData)));
 
                         Log.d("Client","현재 Thread개수 = " + mcontrollerThread.size());
+                        CurrentClickedItem = mcontrollerThread.size()-1;
 
                         mcontrollerThread.get(mcontrollerThread.size()-1).start();
 
@@ -207,8 +212,9 @@ public class ControllerActivity extends Activity implements View.OnClickListener
                 view.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v)
                     {
-                        // 그 채팅방으로 들어가는 기능이 필요하다.
-                        // 셋팅
+                        int position = getAdapterPosition();
+
+                        CurrentClickedItem = position; // 현재 누른 칸을 이걸로 설정하고
                     }
                 });
                 // 이 부분에서, 드래그 삭제 기능을 넣어야한다.
@@ -363,6 +369,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
                 isRed[7] = false;
             }
         }
+        SendAll();
 
     }
 
@@ -418,7 +425,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
         bt_textlcd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Text_LCD_Clicked();
+                SendAll();
             }
         });
 
@@ -427,7 +434,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 // 7segment 이벤트
-                Seg7_Clicked();
+                SendAll();
             }
         });
 
@@ -436,7 +443,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 // dotmatrix 클릭되었음
-                Dot_Send_Clicked();
+                SendAll();
             }
         });
 
@@ -454,8 +461,8 @@ public class ControllerActivity extends Activity implements View.OnClickListener
                         {
                             myFull[i].setBackgroundColor(Color.rgb(fullData[i][0],fullData[i][1],fullData[i][2]));
                         }
+                        SendAll();
 
-                        Full_Led_Clicked();
                     }
 
                     @Override
@@ -475,6 +482,48 @@ public class ControllerActivity extends Activity implements View.OnClickListener
     // 전체를 한번에 보내기 위함
     public void SendAll()
     {
+        if(mcontrollerThread.get(CurrentClickedItem)!=null) {
+
+            if(myData.get(CurrentClickedItem).isReadMode==false) {
+                myData.get(CurrentClickedItem).setLed(isRed);
+                if (et_7seg.getText().toString().equals(""))
+                    myData.get(CurrentClickedItem).setSegData(0);
+                else
+                    myData.get(CurrentClickedItem).setSegData(Integer.valueOf(et_7seg.getText().toString()));
+                myData.get(CurrentClickedItem).setDotData(et_dot.getText().toString());
+                myData.get(CurrentClickedItem).setTextData(et_textlcd.getText().toString());
+                myData.get(CurrentClickedItem).setFull(this.fullData);
+
+                mcontrollerThread.get(CurrentClickedItem).sendData();
+            }
+            else
+            {
+                Toast.makeText(this,"Controllee가 읽기모드입니다",Toast.LENGTH_SHORT).show();
+
+                for(int i=0;i<8;i++)
+                {
+                    isRed[i] = myData.get(CurrentClickedItem).getLed()[i];
+                }
+                notifyLED();
+
+                Log.d("CurrentClickedItem",CurrentClickedItem + "");
+                et_7seg.setText(String.valueOf(myData.get(CurrentClickedItem).getSegData()));
+                et_dot.setText(myData.get(CurrentClickedItem).getDotData());
+                et_textlcd.setText(myData.get(CurrentClickedItem).getTextData());
+
+                for(int i=0;i<4;i++)
+                {
+                    for(int j=0;j<3;j++)
+                    {
+                        fullData[i][j] = myData.get(CurrentClickedItem).getFull()[i][j];
+                    }
+                }
+                for(int i=0;i<4;i++)
+                {
+                    myFull[i].setBackgroundColor(Color.rgb(fullData[i][0],fullData[i][1],fullData[i][2]));
+                }
+            }
+        }
 
     }
 
@@ -486,6 +535,23 @@ public class ControllerActivity extends Activity implements View.OnClickListener
     {
         this.controlleeIP_view.setText("Controller IP : " + IP + "/" + Port);
     }
+
+    public void UpdateUI()
+    {
+        String textData = myData.get(CurrentClickedItem).getTextData();
+        String textDot = myData.get(CurrentClickedItem).getDotData();
+        int SegData = myData.get(CurrentClickedItem).getSegData();
+        int [][] fullData = myData.get(CurrentClickedItem).getFull();
+        boolean [] ledData = myData.get(CurrentClickedItem).getLed();
+
+
+        setTextLCDView(textData);
+        setDot_EditText(textDot);
+        set7SegView(SegData);
+        setLedView(ledData);
+        setFullLedView(fullData);
+    }
+
 
     // TextLCD EditText에 값을 고정하기 위함이다.
     public void setTextLCDView(String input)
@@ -502,7 +568,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
         et_dot.setText(input);
 
         // 여기서는 View도 건드려야한다.
-        setDot_fromText(input);
+
         SetDotDevice();
     }
 
@@ -517,36 +583,45 @@ public class ControllerActivity extends Activity implements View.OnClickListener
         SetDotDevice_Advanced();
     }
 
-    public void set7SegView(String input)
+    public void set7SegView(int input)
     {
-        et_7seg.setText(input);
+        et_7seg.setText(String.valueOf(input));
         Set7SegmentDevice();
     }
 
-    public void setLedView(String input)
+    public void setLedView(boolean [] input)
     {
         // 00000000 과 같은 형식
 
-        char [] inputArr = input.toCharArray();
+        //char [] inputArr = input.toCharArray();
 
         for(int i=0;i<8;i++)
         {
-            if(inputArr[i]=='0')
-                isRed[i] = false;
-            else if(inputArr[i]=='1')
-                isRed[i] = true;
+            isRed[i] = input[i];
         }
 
         notifyLED();
         SetLEDDevice();
     }
 
-    public void setFullLedView(String input)
+    public void setFullLedView(int [][] input)
     {
         // 들어온 인풋으로 값을 셋팅하고
 
+        for(int i=0;i<4;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                fullData[i][j] = input[i][j];
+            }
+
+            myFull[i].setBackgroundColor(Color.rgb(fullData[i][0],fullData[i][1],fullData[i][2]));
+        }
+
+
         SetFullLEDDevice();
     }
+
 
 
 
@@ -584,22 +659,26 @@ public class ControllerActivity extends Activity implements View.OnClickListener
 
     public void SendTextLCD(String text)
     {
-
+        myData.get(CurrentClickedItem).setTextData(text);
+        mcontrollerThread.get(CurrentClickedItem).sendData();
     }
 
     public void Send7Segment(int input)
     {
-
+        myData.get(CurrentClickedItem).setSegData(input);
+        mcontrollerThread.get(CurrentClickedItem).sendData();
     }
 
     public void SendLED(boolean [] input)
     {
-
+        myData.get((CurrentClickedItem)).setLed(input);
+        mcontrollerThread.get(CurrentClickedItem).sendData();
     }
 
     public void SendDotMatrix(String input)
     {
-
+        myData.get(CurrentClickedItem).setDotData(input);
+        mcontrollerThread.get(CurrentClickedItem).sendData();
     }
 
     // 이 메소드는 DotMatrix를 하나씩 찍도록 하기 위함..
@@ -608,94 +687,17 @@ public class ControllerActivity extends Activity implements View.OnClickListener
 
     }
 
-    public void SendFullLED(String [][] input)
+    public void SendFullLED(int [][] input)
     {
-
+        //myData.get(CurrentClickedItem).
+        myData.get(CurrentClickedItem).setFull(input);
+        mcontrollerThread.get(CurrentClickedItem).sendData();
     }
 
     // 여기까지는 통신과 관련된 부분 -> 유정이랑 함께 짜야하는 부분
     //---------------------------------------------------------------------------------
 
 
-    //---------------------------------------------------------------------------------
-    // 여기부터는 버튼 등의 이벤트 부분, 내 스스로 짜야하는 부분이다.
-
-    // 입력받은 Text로부터 Dotview로 바꾸어준다.
-    public void setDot_fromText(String input)
-    {
-        // 여기서 Text를 DotView로 띄워줘야한다.
-    }
-
-
-    // 이건 DotMatrix 이미지 클릭형식
-    public void Dot_Advanced_Clicked()
-    {
-        boolean [][] tmpDot = new boolean[7][10];
-        // 데이터를 가져와야한다.
-
-        et_dot.setText("");
-        // Grid View를 건드리게 되면, setDot EditText를 그냥 날려버린다.
-        SendDotMatrix(tmpDot);
-        // 오버로딩 되어있어
-    }
-
-    // 일반 DotMatrix 전송
-    public void Dot_Send_Clicked()
-    {
-        SetDotDevice();
-        setDot_fromText(et_dot.getText().toString());
-        SendDotMatrix(et_dot.getText().toString());
-    }
-
-    public void Seg7_Clicked()
-    {
-        Set7SegmentDevice();
-
-        Send7Segment(Integer.valueOf(et_7seg.getText().toString()));
-    }
-
-    public void Led_Clicked()
-    {
-        SetLEDDevice();
-
-        boolean [] sendLed = new boolean[8];
-        for(int i= 0;i<8;i++)
-        {
-            sendLed[i] = isRed[i];
-        }
-
-        SendLED(sendLed);
-    }
-
-    public void Full_Led_Clicked()
-    {
-        // 쓰레드가 필요하지 않음
-        SetFullLEDDevice();
-
-        // 이부분 추가 요망, UI의 변경이 우선이다.
-
-        String [][] tmp  = new String[4][3];
-
-        for(int i=0;i<4;i++)
-        {
-            for(int j=0;j<3;j++)
-            {
-                tmp[i][j] = new String(String.valueOf(fullData[i][j]));
-            }
-        }
-
-        SendFullLED(tmp);
-
-    }
-    public void Text_LCD_Clicked()
-    {
-        // 쓰레드가 필요하지 않음
-        // 1. 나 자신의 Device를 적용하고
-        SetTextDevice();
-
-        // 2. Controller로 내 Status를 전송한다.
-        SendTextLCD(et_textlcd.getText().toString());
-    }
     // 여기까지
     //-----------------------------------------------------------------------------------
 
@@ -703,6 +705,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
     // 여기부터는 순수 디바이스 부분, 내 스스로 짜야하는 부분이다.
     // 얘네들을 진짜 디바이스만 건드린다. 그 이외에 어떠한 작업도 안한다
     // 디바이스에 적용할 값은 UI 변수들로부터 가져오도록 한다.
+
 
     public void SetFullLEDDevice()
     {

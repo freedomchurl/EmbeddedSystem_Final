@@ -39,7 +39,10 @@ public class ControlleeData {
             this.isReadMode = false;
 
         this.deviceName = devName;
-        this.icon = imageArray[icon];
+        if(icon>=0)
+            this.icon = imageArray[icon];
+        else
+            this.icon = imageArray[0];
     }
 
     public int getIcon() {
@@ -112,7 +115,7 @@ public class ControlleeData {
     }
 
     public String getData() {
-        String allMessage = "TEXT:" + this.getTextData() + "\n" + "DOTM:" + this.getDotData() + "\n" + "SEGM:" + this.getSegData() + "\n" + "FULL:";
+        String allMessage = "DATA:\nTEXT:" + this.getTextData() + "\n" + "DOTM:" + this.getDotData() + "\n" + "SEGM:" + this.getSegData() + "\n" + "FULL:";
 
         int[][] get = this.getFull();
 
