@@ -25,6 +25,9 @@ import org.w3c.dom.Text;
 public class ControlleeMainActivity extends Activity implements View.OnClickListener{
 
     private String deviceName = null;
+
+    public ControlleeData myData = new ControlleeData();
+
     private int devicePort = 7777; // default value is 7777
     private int iconNum = 0;
     private String deviceIP = null;
@@ -501,7 +504,7 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
     public void StartSock()
     {
         // 1. SockThread를 생성함과 동시에 this Activity의 Thread 값에 대입해야한다.
-        ee_Thread = new ControlleeThread(devicePort,this);
+        ee_Thread = new ControlleeThread(devicePort,this,myData);
         ee_Thread.start();
         // 자신의 정보를 Controller에게 보내야한다.
     }

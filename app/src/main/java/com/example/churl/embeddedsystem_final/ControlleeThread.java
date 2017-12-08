@@ -16,12 +16,14 @@ public class ControlleeThread extends Thread {
     int port;
     ControlleeMainActivity activity;
 
+    ControlleeData myData = null;
 
     ControlleeSendThread send = null;
     ControlleeRecvThread recv = null;
 
-    ControlleeThread(int port, ControlleeMainActivity activity)
+    ControlleeThread(int port, ControlleeMainActivity activity,ControlleeData myData)
     {
+        this.myData = myData;
         this.port = port;
         this.activity = activity;
     }
@@ -99,6 +101,17 @@ public class ControlleeThread extends Thread {
     {
         if(send!=null) {
             send.message = new String(msg);
+            send.hasMessage = true;
+        }
+    }
+
+    public void sendData()
+    {
+       String allMessage = myData.getData();
+
+        if(send!=null)
+        {
+            send.message = new String(allMessage);
             send.hasMessage = true;
         }
     }

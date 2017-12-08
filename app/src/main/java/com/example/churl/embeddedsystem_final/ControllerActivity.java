@@ -557,22 +557,22 @@ public class ControllerActivity extends Activity implements View.OnClickListener
     // Socket을 끊는다. Discon, onBackPressed, onDestroy와 같은 경우에서 사용해야한다.
     public void DisconnectSock()
     {
+
+
         // 1. Sock 종료
         // 2. 이 Activity내의 Thread 값 null로 변경
         // 3. 그리고 onBackPressed가 아닌 경우, 다시 생성해주어야한다. 메소드로 분리필요
-        for(int i=0;i<mcontrollerThread.size();i++) {
+        for(int position=0;position<mcontrollerThread.size();position++) {
             //mcontrollerThread.get(i).sendCheck("EXIT:");
             try {
+                mcontrollerThread.get(position).sendMessage("EXIT:");
+                mcontrollerThread.remove(position);
+                myData.remove(position);
                 //mcontrollerThread.get(i).closeConnection();
             } catch (Exception e) {
             }
         }
-    }
-
-    // Socket을 생성하는 순간 ( onCreate에서와, 임의로 Discon을 할때 모두 이용 )
-    public void StartSock()
-    {
-        // 1. SockThread를 생성함과 동시에 this Activity의 Thread 값에 대입해야한다.
+        controlleeView.getAdapter().notifyDataSetChanged();
     }
 
     // Read Only - Read/Write 를 설정하는 순간 Controller에게 보내야 한다.
