@@ -84,25 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="10dp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_weight="1"
-                    android:text="접속 비밀번호"
-                    android:textColor="#ffffff"
-                    android:gravity="center"
-                    android:textSize="10dp"
-                    android:background="#585858"/>
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:hint="접속 비밀번호를 입력하세요"
-                    android:textSize="11dp"
-                    android:paddingLeft="10dp"
-                    android:inputType="textPassword"
-                    android:id="@+id/add_controllee_pwd"
-                    android:background="#ffffff"/>
 
 
             </LinearLayout>

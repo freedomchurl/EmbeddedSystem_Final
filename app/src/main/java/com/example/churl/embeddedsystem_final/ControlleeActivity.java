@@ -74,7 +74,6 @@ public class ControlleeActivity extends Activity {
         readMode = (Switch) findViewById(R.id.readOnlyModeSwitch);
         deviceName = (EditText) findViewById(R.id.deviceName_controllee);
         devicePort = (EditText) findViewById(R.id.devicePort_controllee);
-        devicePwd = (EditText) findViewById(R.id.devicePwd_controllee);
 
         readMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -141,13 +140,12 @@ public class ControlleeActivity extends Activity {
 
                 String devName = deviceName.getText().toString();
                 String devPort = devicePort.getText().toString();
-                String devPwd = devicePwd.getText().toString();
 
-                if(!devName.equals("") && !devPort.equals("") && !devPwd.equals("")) {
+
+                if(!devName.equals("") && !devPort.equals("")) {
 
                     i.putExtra("DEVICE_NAME", devName);
                     i.putExtra("DEVICE_PORT", Integer.valueOf(devPort));
-                    i.putExtra("DEVICE_PWD", devPwd);
                     i.putExtra("IS_READMODE", isReadMode);
                     i.putExtra("ICON_NUM", clickedIconPosition);
                     i.putExtra("DEVICE_IP",deviceIP);

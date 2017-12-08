@@ -1,72 +1,69 @@
 package com.example.churl.embeddedsystem_final;
 
-import android.app.Activity;
 import android.util.Log;
 
-import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
- * Created by YuJeong on 2017-12-04.
+ * Created by churl on 2017-12-08.
  */
 
-public class ControllerThread extends Thread{
+public class ControllerThread extends Thread {
 
-    private static int GIVEN_PORT;
-    private static String GIVEN_IP;
-    private static final int TIMEOUT =5000;
-    private Socket mSocket;
-    private String str;
-    private boolean mShouldStop;
-    private Thread sender;
-    private Thread reader;
+    Socket sock = null;
+    int port;
+    ControllerActivity activity;
+    String ip = null;
 
+    ControllerSendThread send = null;
+    ControllerRecvThread recv = null;
 
+    ArrayList<ControlleeData> myData = null;
 
-    private Activity activity;
-    public ControllerThread(String GIVEN_IP, int GIVEN_PORT, Activity activity)
+    ControllerThread(String ip, int port, ControllerActivity activity, ArrayList<ControlleeData> input)
     {
-        this.GIVEN_PORT =GIVEN_PORT ;
-        this.GIVEN_IP = GIVEN_IP;
+        this.port = port;
+        this.ip = ip;
+        this.myData = input;
         this.activity = activity;
-        mShouldStop = true;
-
     }
-    @Override
-    public void run(){
+
+    public void run()
+    {
         try{
 
-            mSocket = new Socket( GIVEN_IP, GIVEN_PORT);
-            Log.d("Thread","start controller :"+GIVEN_IP +" port : "+GIVEN_PORT);
-            mSocket.setSoTimeout(TIMEOUT);
+            sock = new Socket(ip,port);
 
-           sender = new ControllerSenderThread(mSocket,activity);
-           reader = new ControllerReceiverThread(mSocket,activity);
+            send = new ControllerSendThread(sock,activity,myData,this);
+            recv = new ControllerRecvThread(sock,activity,myData,this);
 
+            send.start();
+            recv.start();
 
-            Log.d("Thread","controlee str : "+str);
-            Log.d("Thread","start d :"+GIVEN_IP +" port : "+GIVEN_PORT);
-            sender.start();
-            reader.start();
+            Log.d("Client","Send Recv Create");
 
-        }catch (IOException e){
-            Log.d("Thread","이미 이건 Controller가 있는 Controllee지롱!");
-            e.printStackTrace();
+        }catch (Exception e){}
+    }
+
+    public void stopThread()
+    {
+        if(send!=null && recv!=null) {
+            send.isRunning = false;
+            recv.isRunning = false;
+            try {
+                sock.close();
+            } catch (Exception e) {
+            }
         }
     }
 
-    public void closeConnection() throws IOException{
-        mShouldStop = true;
-        if(mSocket!=null){
-            mSocket.close();
+    public void sendMessage(String msg)
+    {
+        if(send!=null) {
+            send.message = new String(msg);
+            send.hasMessage = true;
         }
-        mSocket = null;
-    }
-
-    public void sendCheck(String msg){
-
-      ((ControllerSenderThread)sender).setMSG(msg);
-        Log.d("THREAD","함수부분 : "+msg);
     }
 
 }

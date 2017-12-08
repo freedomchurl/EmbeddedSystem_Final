@@ -26,9 +26,9 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
 
     private String deviceName = null;
     private int devicePort = 7777; // default value is 7777
-    private int iconNum = -1;
+    private int iconNum = 0;
     private String deviceIP = null;
-    private String devicePwd = null;
+
 
     private boolean isReadMode = false;
 
@@ -58,6 +58,8 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
     private TextView[] myFull = new TextView[4];
 
 
+    private ControlleeThread ee_Thread = null;
+
     private int[][] fullData = new int[4][3];
 
     // Socket용 Thread가 하나 존재하고 null로 초기화 되어야한다. 항상 null을 유지
@@ -73,7 +75,6 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         deviceName =  i.getStringExtra("DEVICE_NAME");
         deviceIP = i.getStringExtra("DEVICE_IP");
         devicePort = i.getIntExtra("DEVICE_PORT",7777);
-        devicePwd = i.getStringExtra("DEVICE_PWD");
         isReadMode = i.getBooleanExtra("IS_READMODE",false);
         iconNum = i.getIntExtra("ICON_NUM",0);
 
@@ -88,6 +89,19 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         // 여기서 소켓생성을 통해서 ServerSocket을 열어야 한다.
 
         StartSock();
+    }
+
+    public boolean isReadMode()
+    {
+        return this.isReadMode;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public int getIconNum() {
+        return iconNum;
     }
 
     @Override
@@ -246,9 +260,7 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
             @Override
             public void onClick(View view) {
                 // 현재 가지고있는 소켓의 접속을 끊고, 새롭게 대기해야한다. ( 새롭게 대기해야하는 부분까지 명시 )
-                DisconnectSock();
-                controllerIP.setText("No Connected!");
-                StartSock();
+               ReStartSock();
             }
         });
 
@@ -435,6 +447,10 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
     // 여기부터 미구현 메소드들을 채워넣기 시작한다. - 유정 & 내가 채워넣어야 하는 부분이다
     //---------------------------------------------------------------------------------
 
+    public TextView getControllerIP()
+    {
+        return controllerIP;
+    }
 
     // Socket을 끊는다. Discon, onBackPressed, onDestroy와 같은 경우에서 사용해야한다.
     public void DisconnectSock()
@@ -442,12 +458,52 @@ public class ControlleeMainActivity extends Activity implements View.OnClickList
         // 1. Sock 종료
         // 2. 이 Activity내의 Thread 값 null로 변경
         // 3. 그리고 onBackPressed가 아닌 경우, 다시 생성해주어야한다. 메소드로 분리필요
+        if(ee_Thread !=null)
+        {
+            ee_Thread.sendMessage("EXIT:");
+            // 메시지를 보내면 -> Thread에서 다시 콜 한다.
+            ee_Thread = null;
+        }
+        this.controllerIP.setText("No Connected!");
+    }
+
+    public void StopThread()
+    {
+        Log.d("StopThread 정상","정상인가");
+        ee_Thread.stopThread();
+    }
+
+    public void ReStartSock()
+    {
+        if(ee_Thread !=null)
+        {
+            ee_Thread.sendMessage("REST:");
+            // 메시지를 보내면 -> Thread에서 다시 콜 한다.
+        }
+        this.controllerIP.setText("No Connected!");
+    }
+
+    public void ReStartServerSock()
+    {
+        Log.d("재시작","재시작");
+        ee_Thread.stopThread();
+        ee_Thread.Restart();
+    }
+
+
+    public void DisconnectedLocal()
+    {
+        ee_Thread = null;
+        this.controllerIP.setText("No Connected!");
     }
 
     // Socket을 생성하는 순간 ( onCreate에서와, 임의로 Discon을 할때 모두 이용 )
     public void StartSock()
     {
         // 1. SockThread를 생성함과 동시에 this Activity의 Thread 값에 대입해야한다.
+        ee_Thread = new ControlleeThread(devicePort,this);
+        ee_Thread.start();
+        // 자신의 정보를 Controller에게 보내야한다.
     }
 
     // Read Only - Read/Write 를 설정하는 순간 Controller에게 보내야 한다.

@@ -1,56 +1,105 @@
 package com.example.churl.embeddedsystem_final;
 
-import android.app.Activity;
 import android.util.Log;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created by YuJeong on 2017-12-04.
+ * Created by churl on 2017-12-08.
  */
 
 public class ControlleeThread extends Thread {
-    private static int GIVEN_PORT;
-    private  ServerSocket mServerSocket;
-    private  Socket connection = null;
-    private String str;
-    private ControlleeSenderThread sender;
-    private ControlleeReceiverThread reader;
-    private Activity activity;
-    public ControlleeThread(int PORT, Activity activity){
-        GIVEN_PORT = PORT;
+
+    ServerSocket serverSocket = null;
+    Socket sock = null;
+    int port;
+    ControlleeMainActivity activity;
+
+
+    ControlleeSendThread send = null;
+    ControlleeRecvThread recv = null;
+
+    ControlleeThread(int port, ControlleeMainActivity activity)
+    {
+        this.port = port;
         this.activity = activity;
     }
 
     @Override
-    public void run(){
-        try{
+    public void run() {
 
-            Log.d("Thread","start controllee ");
-            mServerSocket = new ServerSocket(GIVEN_PORT);
-            connection = mServerSocket.accept();
-            sender = new ControlleeSenderThread(connection,activity);
-            reader = new ControlleeReceiverThread(connection,activity);
-            Log.d("Thread","controlee str : ");
-            reader.start();
-            sender.start();
-        }catch (IOException e){
-            e.printStackTrace();
+        try {
+            serverSocket = new ServerSocket(port);
+
+            Log.d("Server","Waiting Accept");
+            sock = serverSocket.accept();
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.setControllerIP_Port(sock.getInetAddress().toString() ,sock.getPort());
+                }
+            });
+
+
+            send = new ControlleeSendThread(sock,activity);
+            recv = new ControlleeRecvThread(sock,activity);
+
+            send.start();
+            recv.start();
+
+            Log.d("Server","Send Recv Create");
+
+
+        }catch (Exception e){}
+    }
+
+    public void stopThread()
+    {
+        if(send!=null && recv!=null) {
+            Log.d("이것도","이것도");
+            send.isRunning = false;
+            recv.isRunning = false;
+            try {
+                sock.close();
+                Log.d("StopThread 정상","정상인가");
+            } catch (Exception e) {
+            }
         }
     }
 
-    public void closeServer() throws  IOException{
-        if(mServerSocket!=null&&!mServerSocket.isClosed()){
-            mServerSocket.close();
+    public void Restart()
+    {
+        try {
+            Log.d("Server","Waiting Accept");
+            sock = serverSocket.accept();
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    activity.setControllerIP_Port(sock.getInetAddress().toString() ,sock.getPort());
+                }
+            });
+
+
+            send = new ControlleeSendThread(sock,activity);
+            recv = new ControlleeRecvThread(sock,activity);
+
+            send.start();
+            recv.start();
+
+            Log.d("Server","Send Recv Create");
+
+
+        }catch (Exception e){}
+    }
+
+    public void sendMessage(String msg)
+    {
+        if(send!=null) {
+            send.message = new String(msg);
+            send.hasMessage = true;
         }
-    }
-    public void setSendMSG(String msg){
-        ((ControlleeSenderThread)sender).setMSG(msg);
-    }
-    public void sendCheck(String msg){
-        ((ControlleeSenderThread)sender).setMSG(msg);
-        Log.d("THREAD","함수부분 : "+msg);
     }
 }

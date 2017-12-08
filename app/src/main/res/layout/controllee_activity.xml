@@ -102,39 +102,7 @@
 
                     </LinearLayout>
 
-                    <android.support.v4.widget.Space
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="0.1"/>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:text="디바이스 비밀번호"
-                            android:textColor="#ffffff"
-                            android:gravity="center"
-                            android:textSize="10dp"
-                            android:background="#585858"/>
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:hint="보안을 위한 디바이스 비밀번호를 입력하세요"
-                            android:textSize="11dp"
-                            android:inputType="textPassword"
-                            android:id="@+id/devicePwd_controllee"
-                            android:paddingLeft="10dp"
-                            android:background="#ffffff"/>
-
-
-
-                    </LinearLayout>
 
                 </LinearLayout>
 

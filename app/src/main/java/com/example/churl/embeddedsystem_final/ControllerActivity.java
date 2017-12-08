@@ -66,13 +66,13 @@ public class ControllerActivity extends Activity implements View.OnClickListener
 
     private String tmpAddIP = null;
     private int tmpAddPort = 7777;
-    private String tmpAddPwd = null;
 
     private int[][] fullData = new int[4][3];
     private TextView[] myFull = new TextView[4];
 
     ItemTouchHelper itemTouchHelper = null;
 
+    ArrayList<ControllerThread> mcontrollerThread = new ArrayList<ControllerThread>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,13 +102,16 @@ public class ControllerActivity extends Activity implements View.OnClickListener
                         // 여기서 동작해야한다.
                         tmpAddIP = ip;
                         tmpAddPort = port;
-                        tmpAddPwd = pwd;
 
                         // 그리고 여기서 RecyclerView에 추가하고, 서버와 통신을 열어야한다.
-                        Log.d("Input Data","IP = " + ip + ", Port = " + port + ", Pwd = " + pwd);
+                        //Log.d("Input Data","IP = " + ip + ", Port = " + port + ", Pwd = " + pwd);
 
-                        myData.add(new ControlleeData("sss",ip,0));
-                        adapter.notifyDataSetChanged();
+
+                        mcontrollerThread.add((new ControllerThread(tmpAddIP,tmpAddPort,ControllerActivity.this,myData)));
+
+                        Log.d("Client","현재 Thread개수 = " + mcontrollerThread.size());
+
+                        mcontrollerThread.get(mcontrollerThread.size()-1).start();
 
                         // 이 부분의 수정이 필요하다
                     }
@@ -124,6 +127,12 @@ public class ControllerActivity extends Activity implements View.OnClickListener
 
     }
 
+    public RecyclerView.Adapter getAdapter()
+    {
+        return this.adapter;
+    }
+
+
     ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT){
 
         @Override
@@ -137,6 +146,9 @@ public class ControllerActivity extends Activity implements View.OnClickListener
             final int position = viewHolder.getAdapterPosition();
 
             Log.d("Adapter","Adapter");
+
+            mcontrollerThread.get(position).sendMessage("EXIT:");
+            mcontrollerThread.remove(position);
             myData.remove(position);
             controlleeView.getAdapter().notifyDataSetChanged();
 
@@ -548,6 +560,13 @@ public class ControllerActivity extends Activity implements View.OnClickListener
         // 1. Sock 종료
         // 2. 이 Activity내의 Thread 값 null로 변경
         // 3. 그리고 onBackPressed가 아닌 경우, 다시 생성해주어야한다. 메소드로 분리필요
+        for(int i=0;i<mcontrollerThread.size();i++) {
+            //mcontrollerThread.get(i).sendCheck("EXIT:");
+            try {
+                //mcontrollerThread.get(i).closeConnection();
+            } catch (Exception e) {
+            }
+        }
     }
 
     // Socket을 생성하는 순간 ( onCreate에서와, 임의로 Discon을 할때 모두 이용 )

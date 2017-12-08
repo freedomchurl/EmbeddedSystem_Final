@@ -9,14 +9,22 @@ public class ControlleeData {
     String deviceName;
     String deviceIP;
     int icon;
+    boolean isReadMode;
 
     private int [] imageArray = {R.drawable.bulb,R.drawable.crane,
             R.drawable.handshake, R.drawable.piston,
             R.drawable.team, R.drawable.remote};
 
-    ControlleeData(String devName, String ip, int icon)
+    ControlleeData(String devName, String ip, int icon, String isReadMode)
     {
         this.deviceIP = ip;
+        if(isReadMode.equals("TRUE"))
+        {
+            this.isReadMode = true;
+        }
+        else
+            this.isReadMode = false;
+
         this.deviceName = devName;
         this.icon = imageArray[icon];
     }

@@ -57,7 +57,6 @@ public class AddControlleeDialog extends Dialog{
 
         inputIP = (EditText) findViewById(R.id.add_controllee_ip);
         inputPort = (EditText) findViewById(R.id.add_controllee_port);
-        inputPwd = (EditText) findViewById(R.id.add_controllee_pwd);
 
         CancelButton = (Button) findViewById(R.id.add_cancel_Button);
         OkButton = (Button) findViewById(R.id.add_ok_Button);
@@ -75,15 +74,14 @@ public class AddControlleeDialog extends Dialog{
 
                 String ip = inputIP.getText().toString();
                 String tmpPort = inputPort.getText().toString();
-                String pwd = inputPwd.getText().toString();
 
-                if(ip.equals("") || tmpPort.equals("") || pwd.equals(""))
+                if(ip.equals("") || tmpPort.equals("") )
                     Toast.makeText(context,"빈칸을 채우세요",Toast.LENGTH_SHORT).show();
 
                 else {
                     int port = Integer.valueOf(tmpPort);
                     // Activity로 전달해주어야한다. Interface를 사용하자.
-                    onCustomDialogEventListener.customDialogEvent(ip, pwd, port);
+                    onCustomDialogEventListener.customDialogEvent(ip, "", port);
 
                     cancel();
                 }
