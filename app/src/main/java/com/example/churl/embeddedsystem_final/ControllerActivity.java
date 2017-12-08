@@ -215,6 +215,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
                         int position = getAdapterPosition();
 
                         CurrentClickedItem = position; // 현재 누른 칸을 이걸로 설정하고
+                        UpdateUI();
                     }
                 });
                 // 이 부분에서, 드래그 삭제 기능을 넣어야한다.

@@ -136,14 +136,17 @@ public class ControllerRecvThread extends Thread {
                         myTmp.setLed(ledValues);
                         myTmp.setReadMode(modeData);
 
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                        //  자기꺼일때만 UI변경
+                        if(activity.CurrentClickedItem==myData.indexOf(myTmp)) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 
-                                activity.UpdateUI();
+                                    activity.UpdateUI();
 
-                            }
-                        });
+                                }
+                            });
+                        }
 
 
                     }
