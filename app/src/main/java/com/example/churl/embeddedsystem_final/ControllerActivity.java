@@ -213,7 +213,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
                     public void onClick(View v)
                     {
                         int position = getAdapterPosition();
-
+                        Log.d("김유정빠가",""+position);
                         CurrentClickedItem = position; // 현재 누른 칸을 이걸로 설정하고
                         UpdateUI();
                     }
