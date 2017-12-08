@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -185,7 +186,7 @@ public class ControllerActivity extends Activity implements View.OnClickListener
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             ((MyAdpater.ViewHolder)holder).imageView.setImageResource(mItems.get(position).getIcon());
             ((MyAdpater.ViewHolder)holder).nameView.setText(mItems.get(position).getDeviceName());
-
+            ((ViewHolder)holder).checkBox.setChecked(mItems.get(position).selected);
             setAnimation(((MyAdpater.ViewHolder)holder).imageView, position);
 
         }
@@ -201,13 +202,13 @@ public class ControllerActivity extends Activity implements View.OnClickListener
 
             public ImageView imageView;
             public TextView nameView;
-
+            public CheckBox checkBox;
 
             public ViewHolder(View view) {
                 super(view);
                 imageView = (ImageView) view.findViewById(R.id.imageControllee);
                 nameView = (TextView) view.findViewById(R.id.nameControllee);
-
+                checkBox = (CheckBox) view.findViewById(R.id.checkMulti);
 
                 view.setOnClickListener(new View.OnClickListener(){
                     public void onClick(View v)
@@ -216,6 +217,32 @@ public class ControllerActivity extends Activity implements View.OnClickListener
                         Log.d("김유정빠가",""+position);
                         CurrentClickedItem = position; // 현재 누른 칸을 이걸로 설정하고
                         UpdateUI();
+
+                        for(int i=0;i<mItems.size();i++)
+                        {
+                            mItems.get(i).selected = false;
+                        }
+                        adapter.notifyDataSetChanged();
+                        // 여기서 체크박스를 다 초기화 해야한다.
+
+                    }
+                });
+
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                        int position = getAdapterPosition();
+                        Log.d("DAsasd",b + " " + position);
+
+                        mItems.get(position).selected = b;
+                        // 하나라도 칠해진 녀석이 있는지 확인하도록 한다.
+                        if(CheckMultiMode())
+                        {
+                            // 2개 이상 칠해져있다면 멀티모드다. 일단 VIew를 초기화한다.
+                            InitView();
+                            // 그리고 이제는 이벤트가 발생할때마다, 체크된 전체에게 보내야한다.
+                        }
                     }
                 });
                 // 이 부분에서, 드래그 삭제 기능을 넣어야한다.
@@ -234,6 +261,22 @@ public class ControllerActivity extends Activity implements View.OnClickListener
 
 
     }
+
+
+    public boolean CheckMultiMode()
+    {
+        int count = 0;
+        for(int i=0;i<myData.size();i++)
+        {
+            if(myData.get(i).selected==true)
+                count++;
+        }
+        if(count>=2)
+            return true;
+        else
+            return false;
+    }
+
 
 
     @Override
@@ -480,48 +523,118 @@ public class ControllerActivity extends Activity implements View.OnClickListener
     }
 
 
+    public void InitView()
+    {
+        //Toast.makeText(this,"Controllee가 읽기모드입니다",Toast.LENGTH_SHORT).show();
+
+        for(int i=0;i<8;i++)
+        {
+            isRed[i] = false;
+        }
+        notifyLED();
+
+        et_7seg.setText("0");
+        et_dot.setText("");
+        et_textlcd.setText("");
+
+        for(int i=0;i<4;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                fullData[i][j] = 255;
+            }
+        }
+        for(int i=0;i<4;i++)
+        {
+            myFull[i].setBackgroundColor(Color.rgb(fullData[i][0],fullData[i][1],fullData[i][2]));
+        }
+    }
+
+
     // 전체를 한번에 보내기 위함
     public void SendAll()
     {
-        if(mcontrollerThread.get(CurrentClickedItem)!=null) {
+        if(CheckMultiMode()){
+            // 멀티모드일때는 다르게 구현해야한다.
+            for(int i=0;i<myData.size();i++) {
 
-            if(myData.get(CurrentClickedItem).isReadMode==false) {
-                myData.get(CurrentClickedItem).setLed(isRed);
-                if (et_7seg.getText().toString().equals(""))
-                    myData.get(CurrentClickedItem).setSegData(0);
-                else
-                    myData.get(CurrentClickedItem).setSegData(Integer.valueOf(et_7seg.getText().toString()));
-                myData.get(CurrentClickedItem).setDotData(et_dot.getText().toString());
-                myData.get(CurrentClickedItem).setTextData(et_textlcd.getText().toString());
-                myData.get(CurrentClickedItem).setFull(this.fullData);
+                if(myData.get(i).selected==true) {
 
-                mcontrollerThread.get(CurrentClickedItem).sendData();
-            }
-            else
-            {
-                Toast.makeText(this,"Controllee가 읽기모드입니다",Toast.LENGTH_SHORT).show();
+                    if (myData.get(i).isReadMode == false) {
+                        myData.get(i).setLed(isRed);
+                        if (et_7seg.getText().toString().equals(""))
+                            myData.get(i).setSegData(0);
+                        else
+                            myData.get(i).setSegData(Integer.valueOf(et_7seg.getText().toString()));
+                        myData.get(i).setDotData(et_dot.getText().toString());
+                        myData.get(i).setTextData(et_textlcd.getText().toString());
+                        myData.get(i).setFull(this.fullData);
 
-                for(int i=0;i<8;i++)
-                {
-                    isRed[i] = myData.get(CurrentClickedItem).getLed()[i];
-                }
-                notifyLED();
+                        mcontrollerThread.get(i).sendData();
+                    } else {
+                        //Toast.makeText(this, "Controllee가 읽기모드입니다", Toast.LENGTH_SHORT).show();
 
-                Log.d("CurrentClickedItem",CurrentClickedItem + "");
-                et_7seg.setText(String.valueOf(myData.get(CurrentClickedItem).getSegData()));
-                et_dot.setText(myData.get(CurrentClickedItem).getDotData());
-                et_textlcd.setText(myData.get(CurrentClickedItem).getTextData());
+                        /*
+                        for (int j = 0; j < 8; j++) {
+                            isRed[j] = myData.get(i).getLed()[j];
+                        }
+                        notifyLED();
+*/
+                        Log.d("CurrentClickedItem", i + "");
+                        //et_7seg.setText(String.valueOf(myData.get(i).getSegData()));
+                        //et_dot.setText(myData.get(i).getDotData());
+                        //et_textlcd.setText(myData.get(i).getTextData());
 
-                for(int i=0;i<4;i++)
-                {
-                    for(int j=0;j<3;j++)
-                    {
-                        fullData[i][j] = myData.get(CurrentClickedItem).getFull()[i][j];
+                        /*
+                        for (int j = 0; j < 4; j++) {
+                            for (int l = 0; l < 3; l++) {
+                                fullData[j][l] = myData.get(CurrentClickedItem).getFull()[j][l];
+                            }
+                        }
+                        for (int j = 0; j < 4; j++) {
+                            myFull[j].setBackgroundColor(Color.rgb(fullData[j][0], fullData[j][1], fullData[j][2]));
+                        }*/
                     }
                 }
-                for(int i=0;i<4;i++)
-                {
-                    myFull[i].setBackgroundColor(Color.rgb(fullData[i][0],fullData[i][1],fullData[i][2]));
+            }
+        }
+        else {
+
+
+            if (mcontrollerThread.get(CurrentClickedItem) != null) {
+
+                if (myData.get(CurrentClickedItem).isReadMode == false) {
+                    myData.get(CurrentClickedItem).setLed(isRed);
+                    if (et_7seg.getText().toString().equals(""))
+                        myData.get(CurrentClickedItem).setSegData(0);
+                    else
+                        myData.get(CurrentClickedItem).setSegData(Integer.valueOf(et_7seg.getText().toString()));
+                    myData.get(CurrentClickedItem).setDotData(et_dot.getText().toString());
+                    myData.get(CurrentClickedItem).setTextData(et_textlcd.getText().toString());
+                    myData.get(CurrentClickedItem).setFull(this.fullData);
+
+                    mcontrollerThread.get(CurrentClickedItem).sendData();
+                } else {
+                    Toast.makeText(this, "Controllee가 읽기모드입니다", Toast.LENGTH_SHORT).show();
+
+                    for (int i = 0; i < 8; i++) {
+                        isRed[i] = myData.get(CurrentClickedItem).getLed()[i];
+                    }
+                    notifyLED();
+
+                    Log.d("CurrentClickedItem", CurrentClickedItem + "");
+                    et_7seg.setText(String.valueOf(myData.get(CurrentClickedItem).getSegData()));
+                    et_dot.setText(myData.get(CurrentClickedItem).getDotData());
+                    et_textlcd.setText(myData.get(CurrentClickedItem).getTextData());
+
+                    for (int i = 0; i < 4; i++) {
+                        for (int j = 0; j < 3; j++) {
+                            fullData[i][j] = myData.get(CurrentClickedItem).getFull()[i][j];
+                        }
+                    }
+                    for (int i = 0; i < 4; i++) {
+                        myFull[i].setBackgroundColor(Color.rgb(fullData[i][0], fullData[i][1], fullData[i][2]));
+                    }
                 }
             }
         }

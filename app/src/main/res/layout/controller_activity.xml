@@ -66,7 +66,6 @@
                         android:layout_height="30dp"
                         android:background="#585858"
                         android:gravity="center"
-                        android:text="Seleceted Controllee IP"
                         android:textColor="#ffffff"
                         android:textSize="12dp" />
 

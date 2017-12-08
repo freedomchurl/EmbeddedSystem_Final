@@ -22,6 +22,8 @@ public class ControlleeData {
     boolean [] led = new boolean[8];
 
 
+    boolean selected = false;
+
     ControlleeData()
     {
 
@@ -58,11 +60,11 @@ public class ControlleeData {
     }
 
     public void setDeviceIP(String deviceIP) {
-        this.deviceIP = deviceIP;
+        this.deviceIP = new String(deviceIP);
     }
 
     public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
+        this.deviceName = new String(deviceName);
     }
 
     public void setIcon(int icon) {
@@ -90,16 +92,27 @@ public class ControlleeData {
     }
 
     public void setLed(boolean[] led) {
-        this.led = led;
+        this.led = new boolean[8];
+        for(int i=0;i<8;i++)
+            this.led[i] = led[i];
     }
 
 
     public void setDotData(String dotData) {
-        this.dotData = dotData;
+        this.dotData = new String(dotData);
     }
 
     public void setFull(int[][] full) {
-        this.full = full;
+
+        this.full = new int[4][3];
+        for(int i=0;i<4;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                this.full[i][j] = full[i][j];
+            }
+        }
+
     }
 
     public void setReadMode(boolean readMode) {
@@ -111,7 +124,7 @@ public class ControlleeData {
     }
 
     public void setTextData(String textData) {
-        this.textData = textData;
+        this.textData = new String(textData);
     }
 
     public String getData() {
